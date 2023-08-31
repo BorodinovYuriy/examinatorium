@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -13,7 +14,6 @@ import ru.bor.examinatorium.controllers.WelcomeController;
 
 @Component
 public class JavaFxApplication extends Application {
-
     private ConfigurableApplicationContext applicationContext;
 
     @Override
@@ -31,6 +31,7 @@ public class JavaFxApplication extends Application {
         Parent root = fxWeaver.loadView(WelcomeController.class);
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
