@@ -42,10 +42,6 @@
                   <Label layoutX="14.0" layoutY="76.0" text="Пароль:" />
                </children>
             </AnchorPane>
-            <Button fx:id="testListButton" layoutX="14.0" layoutY="42.0" mnemonicParsing="false" onAction="#loadViewTestChoice" prefHeight="88.0" prefWidth="271.0" text="Показать список тестов">
-               <effect>
-                  <DropShadow />
-               </effect></Button>
             <TextArea fx:id="help" layoutX="20.0" layoutY="252.0" prefHeight="74.0" prefWidth="562.0" wrapText="true">
                <effect>
                   <DropShadow>

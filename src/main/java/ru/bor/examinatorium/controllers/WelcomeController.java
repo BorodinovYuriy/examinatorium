@@ -48,13 +48,12 @@ public class WelcomeController {
     @FXML
     public Label choiceTheTestLabel;
     @FXML
-    public Button testListButton;
-    @FXML
     public TextArea help;
 
     @FXML
     private void initialize() {
         this.help.setText("Выберите тест для прохождения из списка тестов, введите свой id, нажмите: \"Начать\". ");
+        loadViewTestChoice();
     }
 
 
@@ -76,7 +75,6 @@ public class WelcomeController {
     }
     public void loadAdminPage(ActionEvent actionEvent){
         startTestButton.getScene().getWindow().hide();
-
         Stage stage = new Stage();
         FxWeaver fxWeaver = context.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(AdminController.class);
@@ -84,7 +82,7 @@ public class WelcomeController {
         stage.setScene(scene);
         stage.show();
     }
-    public void loadViewTestChoice() {
+    private void loadViewTestChoice() {
         listViewTestChoice.
                 getItems().
                 addAll(
@@ -101,8 +99,6 @@ public class WelcomeController {
                         "Item 11",
                         "Item 12"
                 );
-
-        testListButton.setVisible(false);
         choiceTheTestLabel.setVisible(true);
         listViewTestChoice.setVisible(true);
         help.setVisible(false);
