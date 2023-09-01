@@ -46,7 +46,7 @@
                <effect>
                   <DropShadow />
                </effect></Button>
-            <TextArea fx:id="help" layoutX="20.0" layoutY="252.0" prefHeight="74.0" prefWidth="562.0" text="Выберите тест для прохождения из списка тестов, введите свой id, нажмите -&quot;Начать&quot;. " wrapText="true">
+            <TextArea fx:id="help" layoutX="20.0" layoutY="252.0" prefHeight="74.0" prefWidth="562.0" wrapText="true">
                <effect>
                   <DropShadow>
                      <color>

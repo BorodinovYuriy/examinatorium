@@ -29,6 +29,7 @@ public class JavaFxApplication extends Application {
     public void start(Stage stage) {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(WelcomeController.class);
+
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setResizable(false);

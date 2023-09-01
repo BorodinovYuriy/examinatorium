@@ -4,6 +4,7 @@ package ru.bor.examinatorium.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -16,6 +17,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import ru.bor.examinatorium.services.WelcomeService;
 
+import javax.annotation.PostConstruct;
+
 @Component
 @FxmlView("../welcome-stage.fxml")
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class WelcomeController {
     private final WelcomeService welcomeService;
 
     private final ApplicationContext context;
+
 
     @FXML
     public ListView<String> listViewTestChoice;
@@ -47,6 +51,11 @@ public class WelcomeController {
     public Button testListButton;
     @FXML
     public TextArea help;
+
+    @FXML
+    private void initialize() {
+        this.help.setText("Выберите тест для прохождения из списка тестов, введите свой id, нажмите: \"Начать\". ");
+    }
 
 
     public void setVisibleAdminPane(ActionEvent actionEvent){
@@ -98,6 +107,7 @@ public class WelcomeController {
         listViewTestChoice.setVisible(true);
         help.setVisible(false);
     }
+
 
 
 }
