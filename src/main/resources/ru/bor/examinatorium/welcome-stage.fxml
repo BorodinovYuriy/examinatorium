@@ -4,11 +4,9 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #008080;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.bor.examinatorium.controllers.WelcomeController">
@@ -20,12 +18,12 @@
       </Label>
       <AnchorPane layoutY="55.0" opacity="0.96" prefHeight="345.0" prefWidth="600.0" style="-fx-background-color: #ADD8E6;">
          <children>
-            <Label fx:id="choiceTheTestLabel" layoutX="27.0" layoutY="24.0" text="Выберите тест:" textFill="#137880" visible="false">
+            <Label fx:id="choiceTheTestLabel" layoutX="27.0" layoutY="24.0" text="Выберите тест:" textFill="#137880">
                <font>
                   <Font size="19.0" />
                </font>
             </Label>
-            <ListView fx:id="listViewTestChoice" layoutX="27.0" layoutY="66.0" prefHeight="261.0" prefWidth="271.0" visible="false" />
+            <ListView fx:id="listViewTestChoice" layoutX="27.0" layoutY="66.0" prefHeight="261.0" prefWidth="271.0" />
             <TextField fx:id="idTextField" layoutX="415.0" layoutY="44.0" prefHeight="24.0" prefWidth="156.0" />
             <Button fx:id="startTestButton" layoutX="415.0" layoutY="87.0" mnemonicParsing="false" onAction="#loadMainPage" prefHeight="24.0" prefWidth="156.0" text="Начать">
                <effect>
@@ -42,15 +40,6 @@
                   <Label layoutX="14.0" layoutY="76.0" text="Пароль:" />
                </children>
             </AnchorPane>
-            <TextArea fx:id="help" layoutX="20.0" layoutY="252.0" prefHeight="74.0" prefWidth="562.0" wrapText="true">
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color red="0.44736841320991516" green="0.40594542026519775" blue="0.40594542026519775" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </TextArea>
          </children>
       </AnchorPane>
    </children>

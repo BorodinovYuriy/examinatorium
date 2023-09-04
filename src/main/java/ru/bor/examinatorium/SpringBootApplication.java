@@ -1,13 +1,14 @@
 package ru.bor.examinatorium;
 
 import javafx.application.Application;
+import org.springframework.context.ConfigurableApplicationContext;
 
 @org.springframework.boot.autoconfigure.SpringBootApplication
+
 public class SpringBootApplication {
+    private ConfigurableApplicationContext applicationContext;
 
     public static void main(String[] args) {
-        // This is how normal Spring Boot app would be launched
-        //SpringApplication.run(JavafxWeaverExampleApplication.class, args);
 
         Application.launch(JavaFxApplication.class, args);
     }
