@@ -1,7 +1,5 @@
 package ru.bor.examinatorium.controllers;
 
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -33,7 +31,7 @@ public class WelcomeController {
 
 
     @FXML
-    public ListView<String> listViewTestChoice;
+    public ListView<String> ChoiceListView;
     @FXML
     public TextField idTextField;
     @FXML
@@ -53,13 +51,15 @@ public class WelcomeController {
 
     @FXML
     private void initialize() {
-        loadViewTestTheme();
+        loadTheme();
+
     }
 
     public void setVisibleAdminPane(ActionEvent actionEvent){
         adminLogoAnchorPane.setVisible(adminVisibleCheckBox.isSelected());
     }
     public void loadMainPage(ActionEvent actionEvent){
+        // TODO: 05.09.2023 нажатие "старт" и передача данных
         startTestButton.getScene().getWindow().hide();
 
         Stage stage = new Stage();
@@ -80,11 +80,10 @@ public class WelcomeController {
         stage.setScene(scene);
         stage.show();
     }
-
-    private void loadViewTestTheme() {
+    private void loadTheme() {
         List<String> themeName = new ArrayList<>();
-        themeService.getThemes().forEach(theme -> themeName.add(theme.getThemeName()));
-        listViewTestChoice.
+        themeService.getAllThemes().forEach(theme -> themeName.add(theme.getThemeName()));
+        ChoiceListView.
                 getItems().
                 addAll(themeName);
     }

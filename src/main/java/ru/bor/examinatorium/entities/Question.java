@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.bor.examinatorium.entities.answermode.AnswerModeEnum;
-
 import javax.persistence.*;
 @Getter
 @Setter
@@ -43,14 +41,15 @@ public class Question {
 
     @Column(name = "answer_mode")
     private String answerMode;
+    // TODO: 04.09.2023 поддержать загрузку картинки
 
     @Override
     public String toString() {
-        return  "id = " + id + "\n" +
-                question + "\n\n" +
-                answerOne +"\n\n" +
-                answerTwo +"\n\n" +
-                answerThree +"\n\n" +
+        return  "id = " + id +"\n\n"+
+                question     +"\n\n\n"+
+                answerOne    +"\n\n"+
+                answerTwo    +"\n\n"+
+                answerThree  +"\n\n"+
                 answerFour;
 
     }

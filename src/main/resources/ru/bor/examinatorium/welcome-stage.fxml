@@ -23,7 +23,7 @@
                   <Font size="19.0" />
                </font>
             </Label>
-            <ListView fx:id="listViewTestChoice" layoutX="27.0" layoutY="66.0" prefHeight="261.0" prefWidth="271.0" />
+            <ListView fx:id="ChoiceListView" layoutX="27.0" layoutY="66.0" prefHeight="261.0" prefWidth="271.0" />
             <TextField fx:id="idTextField" layoutX="415.0" layoutY="44.0" prefHeight="24.0" prefWidth="156.0" />
             <Button fx:id="startTestButton" layoutX="415.0" layoutY="87.0" mnemonicParsing="false" onAction="#loadMainPage" prefHeight="24.0" prefWidth="156.0" text="Начать">
                <effect>

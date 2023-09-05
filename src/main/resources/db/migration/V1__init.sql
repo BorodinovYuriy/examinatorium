@@ -17,6 +17,7 @@ create table question
     right_answer        int,
     answer_mode         varchar(15)
 );
+
 insert into theme (theme_name) values
 (
 'Простейшая математика'
@@ -36,10 +37,10 @@ insert into question
 (
      1,
      'Чему равно выражение 2+2 ?',
-    '1) 1',
-    '2) 3',
-    '3) 4',
-    '4) 5',
+    '1. Один',
+    '2. Три',
+    '3. Четыре',
+    '4. Пять',
     3,
     'SINGLE_ANSWER'
 );

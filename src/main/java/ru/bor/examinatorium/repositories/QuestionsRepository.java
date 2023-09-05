@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.bor.examinatorium.entities.Question;
 
 @Repository
-public interface QuestionsRepo extends JpaRepository<Question,Long> {
+public interface QuestionsRepository extends JpaRepository<Question,Long> {
 
 }

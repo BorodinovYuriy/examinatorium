@@ -4,12 +4,12 @@ import javafx.scene.layout.Region;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.bor.examinatorium.entities.Question;
-import ru.bor.examinatorium.repositories.QuestionsRepo;
+import ru.bor.examinatorium.repositories.QuestionsRepository;
 
 @Service
 @RequiredArgsConstructor
 public class MainService {
-    private final QuestionsRepo questionsRepo;
+    private final QuestionsRepository questionsRepository;
 
     public String getImgUrl(Region region){
         String style = region.getStyle();
@@ -27,7 +27,9 @@ public class MainService {
     }
 
     public String getTicket() {
-        Question q = questionsRepo.findById(1L).get();
+        Question q = questionsRepository.findById(1L).get();
         return q.toString();
     }
+
+
 }
