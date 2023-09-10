@@ -13,6 +13,7 @@ import java.util.Optional;
 public class ThemeService {
     private final ThemeRepository themeRepository;
 
+
     public List<Theme> getAllThemes(){
         return themeRepository.findAll();
     }
@@ -31,6 +32,13 @@ public class ThemeService {
         Optional<Theme> ot = themeRepository.findById(id);
         Theme t = ot.get();
         return t;
+    }
+
+    public int getTimer(Long themeId){
+        return themeRepository.findById(themeId).get().getCountdownSeconds();
+    }
+    public Theme getThemeByThemeName(String themeName){
+        return themeRepository.getThemeByThemeName(themeName);
     }
 
 

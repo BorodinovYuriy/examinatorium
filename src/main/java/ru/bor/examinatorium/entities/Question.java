@@ -1,12 +1,12 @@
 package ru.bor.examinatorium.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -41,11 +41,20 @@ public class Question {
 
     @Column(name = "answer_mode")
     private String answerMode;
-    // TODO: 04.09.2023 поддержать загрузку картинки
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Lob
+    @Type(type = "org.hibernate.type.ImageType")
+    private byte[] bytes;
+
+    @Column(name = "content_type")
+    private String contentType;
 
     @Override
     public String toString() {
-        return  "id = " + id +"\n\n"+
+        return  "Q_id = " + id +"\n\n"+
                 question     +"\n\n\n"+
                 answerOne    +"\n\n"+
                 answerTwo    +"\n\n"+

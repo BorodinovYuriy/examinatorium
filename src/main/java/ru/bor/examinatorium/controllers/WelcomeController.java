@@ -8,12 +8,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bytecode.Throw;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import ru.bor.examinatorium.services.InternService;
 import ru.bor.examinatorium.services.ThemeService;
-import ru.bor.examinatorium.services.WelcomeService;
+import ru.bor.examinatorium.util.AlertExceptionWarning;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +24,12 @@ import java.util.List;
 @FxmlView("../welcome-stage.fxml")
 @RequiredArgsConstructor
 public class WelcomeController {
-
-    private final WelcomeService welcomeService;
-
     private final ApplicationContext context;
-
+    private final MainController mainController;
     private final ThemeService themeService;
-
-
+    private final InternService internService;
     @FXML
-    public ListView<String> ChoiceListView;
-    @FXML
-    public TextField idTextField;
+    public ListView<String> choiceListView;
     @FXML
     public Button startTestButton;
     @FXML
@@ -49,27 +45,38 @@ public class WelcomeController {
     @FXML
     public Label choiceTheTestLabel;
 
+
     @FXML
     private void initialize() {
-        loadTheme();
-
+        //подтягивание тем + активация кнопки старт
+        startTestButton.setDisable(true);
+        loadThemes();
+        choiceListView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            startTestButton.setDisable(newValue == null);
+        }));
     }
 
-    public void setVisibleAdminPane(ActionEvent actionEvent){
-        adminLogoAnchorPane.setVisible(adminVisibleCheckBox.isSelected());
+    private void loadThemes() {
+        List<String> themeName = new ArrayList<>();
+        themeService.getAllThemes().forEach(theme -> themeName.add(theme.getThemeName()));
+        choiceListView.getItems().addAll(themeName);
     }
+
     public void loadMainPage(ActionEvent actionEvent){
-        // TODO: 05.09.2023 нажатие "старт" и передача данных
         startTestButton.getScene().getWindow().hide();
-
+        mainController.setTheme(choiceListView.getSelectionModel().getSelectedItems());
         Stage stage = new Stage();
         FxWeaver fxWeaver = context.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(MainController.class);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setMinHeight(600);
-        stage.setMinWidth(950);
+        stage.setMinWidth(1000);
         stage.show();
+    }
+
+    public void setVisibleAdminPane(ActionEvent actionEvent){
+        adminLogoAnchorPane.setVisible(adminVisibleCheckBox.isSelected());
     }
     public void loadAdminPage(ActionEvent actionEvent){
         startTestButton.getScene().getWindow().hide();
@@ -80,14 +87,5 @@ public class WelcomeController {
         stage.setScene(scene);
         stage.show();
     }
-    private void loadTheme() {
-        List<String> themeName = new ArrayList<>();
-        themeService.getAllThemes().forEach(theme -> themeName.add(theme.getThemeName()));
-        ChoiceListView.
-                getItems().
-                addAll(themeName);
-    }
-
-
 
 }

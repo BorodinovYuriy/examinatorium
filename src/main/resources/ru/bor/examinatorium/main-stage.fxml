@@ -48,7 +48,7 @@
       </Label>
       <HBox minHeight="500.0" prefHeight="348.0" prefWidth="728.0" style="-fx-background-color: #FFDEAD;" VBox.vgrow="ALWAYS">
          <children>
-            <TextArea fx:id="questionTextArea" blendMode="MULTIPLY" editable="false" prefHeight="702.0" prefWidth="578.0" promptText="Билет №1  ..............................................................................................." wrapText="true" HBox.hgrow="ALWAYS">
+            <TextArea fx:id="questionTextArea" blendMode="MULTIPLY" editable="false" prefHeight="700.0" prefWidth="530.0" promptText="Билет №1  ..............................................................................................." wrapText="true" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="27.0" />
                </font></TextArea>
@@ -63,7 +63,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <Region fx:id="region" prefHeight="500.0" prefWidth="500.0" style="-fx-background-image: url('https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/82141501/original/7c3da318865b5d06d965680e2be873d7c78ca836/extract-every-image-found-in-a-pdf-file.png'); -fx-background-size: contain; -fx-background-repeat: no-repeat; -fx-background-position: center;" VBox.vgrow="ALWAYS">
+                  <Region fx:id="region" prefHeight="500.0" prefWidth="500.0"  VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin></Region>

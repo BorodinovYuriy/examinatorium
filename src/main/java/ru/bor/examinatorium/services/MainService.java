@@ -1,10 +1,17 @@
 package ru.bor.examinatorium.services;
 
-import javafx.scene.layout.Region;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.bor.examinatorium.entities.Question;
 import ru.bor.examinatorium.repositories.QuestionsRepository;
+
+import java.io.ByteArrayInputStream;
+import java.util.Arrays;
+import java.util.Base64;
+
 
 @Service
 @RequiredArgsConstructor
@@ -21,13 +28,22 @@ public class MainService {
         }
         return null;
     }
-    public void setBackground(Region region, String imageUrl) {
-        String style = String.format("-fx-background-image: url('%s'); -fx-background-size: contain; -fx-background-repeat: no-repeat; -fx-background-position: center;", imageUrl);
-        region.setStyle(style);
+
+    public void setBackgroundImage(Region region, byte[] imageData) {
+        Image image = new Image(new ByteArrayInputStream(imageData));
+        BackgroundImage backgroundImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(100, 100, true, true, true, false)
+        );
+        Background background = new Background(backgroundImage);
+        region.setBackground(background);
     }
 
     public String getTicket() {
-        Question q = questionsRepository.findById(1L).get();
+        Question q = questionsRepository.findById(1L).get();// TODO: 07.09.2023 get()!
         return q.toString();
     }
 
