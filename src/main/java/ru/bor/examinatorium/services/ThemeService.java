@@ -4,42 +4,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.bor.examinatorium.entities.Theme;
 import ru.bor.examinatorium.repositories.ThemeRepository;
+import ru.bor.examinatorium.util.AlertExceptionWarning;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ThemeService {
     private final ThemeRepository themeRepository;
 
-
     public List<Theme> getAllThemes(){
         return themeRepository.findAll();
     }
-
-    public void addTheme(String themeName){
-        Theme theme = new Theme();
-        theme.setThemeName(themeName);
-        themeRepository.save(theme);
+    public void saveTheme(Theme theme){
+        if(!themeRepository.existsThemeByThemeName(theme.getThemeName().trim())){
+            themeRepository.save(theme);
+        }else {
+            AlertExceptionWarning.showAlert("Ошибка уникальности имён", "Тема с таким названием уже существует!");
+        }
     }
-    public void deleteTheme(Long id){
+    public void deleteThemeById(Long id){
         themeRepository.deleteById(id);
-
-    }
-
-    public Theme getThemeById(Long id){
-        Optional<Theme> ot = themeRepository.findById(id);
-        Theme t = ot.get();
-        return t;
-    }
-
-    public int getTimer(Long themeId){
-        return themeRepository.findById(themeId).get().getCountdownSeconds();
     }
     public Theme getThemeByThemeName(String themeName){
         return themeRepository.getThemeByThemeName(themeName);
     }
-
-
 }

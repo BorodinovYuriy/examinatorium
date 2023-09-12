@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="774.0" prefWidth="996.0" style="-fx-background-color: #008080;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.bor.examinatorium.controllers.MainController">
+<VBox fx:id="vBoxAll" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="774.0" prefWidth="996.0" style="-fx-background-color: #008080;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.bor.examinatorium.controllers.MainController">
    <children>
       <MenuBar prefWidth="858.0">
         <menus>
@@ -38,7 +38,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Label fx:id="timer_Label" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" mnemonicParsing="true" opacity="0.76" text="timer" textAlignment="CENTER" textFill="NAVAJOWHITE" textOverrun="CLIP" wrapText="true" VBox.vgrow="ALWAYS">
+      <Label fx:id="timerLabel" alignment="CENTER" contentDisplay="CENTER" depthTest="ENABLE" mnemonicParsing="true" opacity="0.76" text="timer" textAlignment="CENTER" textFill="NAVAJOWHITE" textOverrun="CLIP" wrapText="true" VBox.vgrow="ALWAYS">
          <font>
             <Font size="28.0" />
          </font>
@@ -63,30 +63,30 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <Region fx:id="region" prefHeight="500.0" prefWidth="500.0"  VBox.vgrow="ALWAYS">
+                  <Region fx:id="region" prefHeight="500.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin></Region>
                   <HBox alignment="TOP_CENTER" prefHeight="122.0" prefWidth="481.0">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+                        <VBox fx:id="multiBox" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <CheckBox mnemonicParsing="false" text="Вариант 1">
+                              <CheckBox fx:id="mCBox1" mnemonicParsing="false" text="Вариант 1">
                                  <VBox.margin>
                                     <Insets bottom="10.0" top="10.0" />
                                  </VBox.margin>
                               </CheckBox>
-                              <CheckBox mnemonicParsing="false" text="Вариант 2">
+                              <CheckBox fx:id="mCBox2" mnemonicParsing="false" text="Вариант 2">
                                  <VBox.margin>
                                     <Insets bottom="10.0" top="10.0" />
                                  </VBox.margin>
                               </CheckBox>
-                              <CheckBox mnemonicParsing="false" text="Вариант 3">
+                              <CheckBox fx:id="mCBox3" mnemonicParsing="false" text="Вариант 3">
                                  <VBox.margin>
                                     <Insets bottom="10.0" top="10.0" />
                                  </VBox.margin>
                               </CheckBox>
-                              <CheckBox mnemonicParsing="false" text="Вариант 4">
+                              <CheckBox fx:id="mCBox4" mnemonicParsing="false" text="Вариант 4">
                                  <VBox.margin>
                                     <Insets bottom="10.0" top="10.0" />
                                  </VBox.margin>
@@ -96,41 +96,39 @@
                               <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                            </HBox.margin>
                         </VBox>
-                        <VBox alignment="TOP_CENTER" layoutX="110.0" layoutY="10.0" prefHeight="223.0" prefWidth="119.0">
-                           <children>
-                              <RadioButton mnemonicParsing="false" selected="true" text="Вариант 1">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </VBox.margin>
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="choiseGroup" />
-                                 </toggleGroup>
-                              </RadioButton>
-                              <RadioButton mnemonicParsing="false" selected="true" text="Вариант 2" toggleGroup="$choiseGroup">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </VBox.margin>
-                              </RadioButton>
-                              <RadioButton mnemonicParsing="false" selected="true" text="Вариант 3" toggleGroup="$choiseGroup">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </VBox.margin>
-                              </RadioButton>
-                              <RadioButton mnemonicParsing="false" selected="true" text="Вариант 4" toggleGroup="$choiseGroup">
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </VBox.margin>
-                              </RadioButton>
-                           </children>
+                        <VBox fx:id="singleBox" alignment="TOP_CENTER" layoutX="110.0" layoutY="10.0" prefHeight="223.0" prefWidth="119.0">
                            <HBox.margin>
                               <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                            </HBox.margin>
+                           <RadioButton fx:id="sRBox1" mnemonicParsing="false" text="Вариант 1">
+                              <VBox.margin>
+                                 <Insets bottom="10.0" top="10.0" />
+                              </VBox.margin>
+                              <toggleGroup>
+                                 <ToggleGroup fx:id="choiceGroup" />
+                              </toggleGroup>
+                           </RadioButton>
+                           <RadioButton fx:id="sRBox2" mnemonicParsing="false" text="Вариант 2" toggleGroup="$choiceGroup">
+                              <VBox.margin>
+                                 <Insets bottom="10.0" top="10.0" />
+                              </VBox.margin>
+                           </RadioButton>
+                           <RadioButton fx:id="sRBox3" mnemonicParsing="false" text="Вариант 3" toggleGroup="$choiceGroup">
+                              <VBox.margin>
+                                 <Insets bottom="10.0" top="10.0" />
+                              </VBox.margin>
+                           </RadioButton>
+                           <RadioButton fx:id="sRBox4" mnemonicParsing="false" text="Вариант 4" toggleGroup="$choiceGroup">
+                              <VBox.margin>
+                                 <Insets bottom="10.0" top="10.0" />
+                              </VBox.margin>
+                           </RadioButton>
                         </VBox>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="480.0" style="-fx-background-color: #008080;" VBox.vgrow="NEVER">
+                  <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="408.0" style="-fx-background-color: #008080;" VBox.vgrow="NEVER">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="&lt;&lt;">
+                        <Button fx:id="prevButton" mnemonicParsing="false" onAction="#showPreviousTicket" prefHeight="50.0" prefWidth="60.0" text="&lt;&lt;">
                            <HBox.margin>
                               <Insets right="10.0" top="10.0" />
                            </HBox.margin>
@@ -138,7 +136,7 @@
                               <DropShadow />
                            </effect>
                         </Button>
-                        <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="140.0" text="Ответить">
+                        <Button fx:id="AnswerButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#doAnswer" prefHeight="50.0" prefWidth="140.0" text="Ответить">
                            <effect>
                               <DropShadow />
                            </effect>
@@ -146,7 +144,7 @@
                               <Insets top="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button layoutX="72.0" layoutY="10.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="60.0" text="&gt;&gt;">
+                        <Button fx:id="nextButton" layoutX="72.0" layoutY="10.0" mnemonicParsing="false" onAction="#showNextTicket" prefHeight="50.0" prefWidth="60.0" text="&gt;&gt;">
                            <HBox.margin>
                               <Insets left="10.0" top="10.0" />
                            </HBox.margin>

@@ -28,7 +28,7 @@ create table question
     answer_two          text not null,
     answer_three        text not null,
     answer_four         text not null,
-    right_answer        int not null,
+    right_answer        varchar(4) not null,
     answer_mode         varchar(15) not null,
     file_name           varchar(100),
     bytes               bytea,

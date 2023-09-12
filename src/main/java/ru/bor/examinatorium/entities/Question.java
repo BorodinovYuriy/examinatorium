@@ -2,6 +2,7 @@ package ru.bor.examinatorium.entities;
 
 import lombok.*;
 import org.hibernate.annotations.Type;
+import ru.bor.examinatorium.entities.answermode.AnswerModeEnum;
 
 import javax.persistence.*;
 @Getter
@@ -19,7 +20,7 @@ public class Question {
     private Long id;
 
     @Column(name = "theme_id")
-    private Long theme_id;
+    private Long themeId;
 
     @Column(name = "question")
     private String question;
@@ -37,10 +38,11 @@ public class Question {
     private String answerFour;
 
     @Column(name = "right_answer")
-    private int rightAnswer;
+    private String rightAnswer;
 
-    @Column(name = "answer_mode")
-    private String answerMode;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "answer_mode",unique = true)
+    private AnswerModeEnum answerMode;
 
     @Column(name = "file_name")
     private String fileName;

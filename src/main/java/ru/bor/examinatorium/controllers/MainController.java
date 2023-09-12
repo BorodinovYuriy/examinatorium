@@ -3,13 +3,12 @@ package ru.bor.examinatorium.controllers;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -22,9 +21,8 @@ import ru.bor.examinatorium.services.QuestionService;
 import ru.bor.examinatorium.services.ThemeService;
 import ru.bor.examinatorium.util.FileResourcesUtils;
 
-import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Component
 @FxmlView("../main-stage.fxml")
@@ -37,61 +35,119 @@ public class MainController {
     @FXML
     public Label choiseTextInfo_Label;// TODO: 07.09.2023 логика отображения и дизайн -всего ответов и кол-во правильных
     @FXML
-    public ImageView imageView_questionIMG;
-    @FXML
-    public Image image_img;
-    @FXML
     public Region region;
     @FXML
     public TextArea questionTextArea;
     @FXML
-    public Label timer_Label;
+    public Label timerLabel;
+    @FXML
+    public VBox singleBox;
+    @FXML
+    public VBox multiBox;
+    @FXML
+    public ToggleGroup choiceGroup;
+    @FXML
+    public CheckBox mCBox1;
+    @FXML
+    public CheckBox mCBox2;
+    @FXML
+    public CheckBox mCBox3;
+    @FXML
+    public CheckBox mCBox4;
+    @FXML
+    public RadioButton sRBox1;
+    @FXML
+    public RadioButton sRBox2;
+    @FXML
+    public RadioButton sRBox3;
+    @FXML
+    public RadioButton sRBox4;
+    @FXML
+    public Button AnswerButton;
+    @FXML
+    public VBox vBoxAll;
+
     private int remainingSeconds;
     private Theme theme;
-    private FileResourcesUtils fileResourcesUtils;
-    List<Question> questionList = new ArrayList<>();
+    private List<Question> questionList;
+    private int[] randomNumberOfTicketArr;
+    private int questionPage = 0;
+
     public void setTheme(ObservableList<String> selectedItems) {
-        // TODO: 10.09.2023 доделать метод
         this.theme = themeService.getThemeByThemeName(selectedItems.get(0));
     }
 
     @FXML
     private void initialize() {
-        fileResourcesUtils = new FileResourcesUtils();
-        Question question = createTestEntityQuestions();
-        questionService.saveQuestion(question);
-        Image image = new Image(new ByteArrayInputStream(question.getBytes()));
-        mainService.setBackgroundImage(region,question.getBytes());
 
-        questionTextArea.setText(mainService.getTicket());//тест
+//        createTestEntityQuestions();
 
+        singleBox.setVisible(false);
+        multiBox.setVisible(false);
+        questionList = questionService.findAllThemeQuestions(theme.getId());
+        setRandomNumberArr(questionList.size());
+        showQuestion();
         startCountdown();
     }
+    private void setRandomNumberArr(int questionListSize) {
+        randomNumberOfTicketArr = new int[questionListSize];
 
-    private Question createTestEntityQuestions() {
+        Random random = new Random();
+        int count = 0;
+        while (count < randomNumberOfTicketArr.length) {
 
-        byte[] arr = fileResourcesUtils
-                .convertStreamToByteArr(
-                        fileResourcesUtils
-                                .getFileFromResourceAsStream("images/classic.png"));
+            int randomInt = random.nextInt(questionListSize);
+            boolean isDuplicate = false;
+            for (int i = 0; i < count; i++) {
+                if (randomNumberOfTicketArr[i] == randomInt) {
+                    isDuplicate = true;
+                    break;
+                }
+            }
+            if (!isDuplicate) {
+                randomNumberOfTicketArr[count] = randomInt;
+                count++;
+            }
+        }
+    }
+    private void showQuestion() {
+        resetChoiceButtons();
+        if (questionPage >= randomNumberOfTicketArr.length) questionPage = 0;
+        if(questionPage < 0) questionPage = randomNumberOfTicketArr.length - 1;
 
-        Question q1 = Question.builder()
-                .theme_id(1L)
-                .question("Чему равно выражение 2+2 ?")
-                .answerOne("Один")
-                .answerTwo("Три")
-                .answerThree("Четыре")
-                .answerFour("Пять")
-                .rightAnswer(3)
-                .answerMode(AnswerModeEnum.SINGLE_ANSWER.name())
-                .fileName("classic.png")
-                .bytes(arr)
-                .contentType("image/jpeg")
-                .build();
-        return q1;
+        Question question = questionList.get(randomNumberOfTicketArr[questionPage]);
+
+        questionTextArea.setText(question.toString());
+        mainService.setBackgroundImage(region, question.getBytes());
+
+        if(question.getAnswerMode().equals(AnswerModeEnum.SINGLE_ANSWER)){
+                singleBox.setVisible(true);
+                multiBox.setVisible(false);
+        }
+        if(question.getAnswerMode().equals(AnswerModeEnum.MULTI_ANSWER)){
+            singleBox.setVisible(false);
+            multiBox.setVisible(true);
+        }
+        questionPage++;
+    }
+    private void resetChoiceButtons() {
+        mCBox1.setSelected(false);
+        mCBox2.setSelected(false);
+        mCBox3.setSelected(false);
+        mCBox4.setSelected(false);
+        sRBox1.setSelected(false);
+        sRBox2.setSelected(false);
+        sRBox3.setSelected(false);
+        sRBox4.setSelected(false);
 
     }
-
+    public void showNextTicket(ActionEvent actionEvent) {
+        showQuestion();
+    }
+    public void showPreviousTicket(ActionEvent actionEvent) {
+        questionPage -= 2;
+        showQuestion();
+    }
     private void startCountdown() {
         remainingSeconds = theme.getCountdownSeconds();
 
@@ -102,10 +158,10 @@ public class MainController {
             if (remainingSeconds > 0) {
                 int minutes = remainingSeconds / 60;
                 int seconds = remainingSeconds % 60;
-                timer_Label.setText(String.format("%02d:%02d", minutes, seconds));
+                timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
                 remainingSeconds--;
             } else {
-                timer_Label.setText("Время вышло!");
+                timerLabel.setText("Время вышло!");
                 timeline.stop();
                 // TODO: 05.09.2023 логика завершения и досрочного завершения(либо через ActionEvent)
             }
@@ -114,11 +170,80 @@ public class MainController {
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
-    private String getImgUrl(Region region) {
-        return mainService.getImgUrl(region);
+    public void doAnswer(ActionEvent actionEvent) {
+        boolean isRight = false;
+        Question question = questionList.get(randomNumberOfTicketArr[questionPage-1]);
+
+        if (question.getAnswerMode().equals(AnswerModeEnum.SINGLE_ANSWER) && choiceGroup.getSelectedToggle() != null) {
+            isRight = isRightAnswerForSingleAnswer(question);
+        }
+        if(question.getAnswerMode().equals(AnswerModeEnum.MULTI_ANSWER)){
+            isRight = isRightAnswerForMultiAnswer(question);
+        }
+        if (!isRight)mainService.changeColorToRed(vBoxAll);//Знак неправильного ответа!
+
+        System.out.println(isRight);
+        resetChoiceButtons();
+        // TODO: 11.09.2023 отобразить интерну правильность ответа
+        showQuestion();
     }
+    private boolean isRightAnswerForMultiAnswer(Question question) {
+        StringBuilder internResult = new StringBuilder();
+        String rightAnswerFromQuestion = question.getRightAnswer();
+
+        if (mCBox1.isSelected()) internResult.append("1");
+        if (mCBox2.isSelected()) internResult.append("2");
+        if (mCBox3.isSelected()) internResult.append("3");
+        if (mCBox4.isSelected()) internResult.append("4");
+
+        String intResult = internResult.toString();
+        return !intResult.isEmpty() && intResult.equals(rightAnswerFromQuestion);
+        // TODO: 11.09.2023 дальнейшая логика и возврат boolean, продумать логику уже отвеченных билетов
+    }
+    private boolean isRightAnswerForSingleAnswer(Question question) {
+        RadioButton selectedRadioButton = (RadioButton) choiceGroup.getSelectedToggle();
+        String internAnswer = selectedRadioButton.getId().substring(5);
+        return internAnswer.equals(question.getRightAnswer());
+        // TODO: 11.09.2023 дальнейшая логика и возврат boolean, продумать логику уже отвеченных билетов
+    }
+    private void createTestEntityQuestions() {
+        FileResourcesUtils fileResourcesUtils = new FileResourcesUtils();
+        byte[] arr = fileResourcesUtils
+                .convertStreamToByteArr(
+                        fileResourcesUtils
+                                .getFileFromResourceAsStream("images/classic.png"));
+
+        Question q1 = Question.builder()
+                .themeId(1L)
+                .question("Чему равно выражение 2+2 ?")
+                .answerOne("Один")
+                .answerTwo("Три")
+                .answerThree("Четыре")
+                .answerFour("Пять")
+                .rightAnswer("3")
+                .answerMode(AnswerModeEnum.SINGLE_ANSWER)
+                .fileName("classic.png")
+                .bytes(arr)
+                .contentType("image/jpeg")
+                .build();
+        Question q2 = Question.builder()
+                .themeId(1L)
+                .question("Выберите правильные варианты:")
+                .answerOne("3 - 2 = 1")
+                .answerTwo("4 - 1 = 5")
+                .answerThree("0 - 0 = 0")
+                .answerFour("1 + 1 = 10")
+                .rightAnswer("13")// TODO: 10.09.2023 как бы сделать????
+                .answerMode(AnswerModeEnum.MULTI_ANSWER)
+                .fileName("classic.png")
+                .bytes(arr)
+                .contentType("image/jpeg")
+                .build();
 
 
+        questionService.saveQuestion(q1);
+        questionService.saveQuestion(q2);
+    }
 
 
 }

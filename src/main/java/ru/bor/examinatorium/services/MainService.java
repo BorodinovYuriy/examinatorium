@@ -1,22 +1,19 @@
 package ru.bor.examinatorium.services;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.util.Duration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.bor.examinatorium.entities.Question;
-import ru.bor.examinatorium.repositories.QuestionsRepository;
 
 import java.io.ByteArrayInputStream;
-import java.util.Arrays;
-import java.util.Base64;
 
 
 @Service
 @RequiredArgsConstructor
 public class MainService {
-    private final QuestionsRepository questionsRepository;
 
     public String getImgUrl(Region region){
         String style = region.getStyle();
@@ -42,10 +39,14 @@ public class MainService {
         region.setBackground(background);
     }
 
-    public String getTicket() {
-        Question q = questionsRepository.findById(1L).get();// TODO: 07.09.2023 get()!
-        return q.toString();
+    public void changeColorToRed(VBox vBox) {
+        vBox.setStyle("-fx-background-color: red;");
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.8), event -> {
+            vBox.setStyle("-fx-background-color:  #008080;");
+        }));
+        timeline.play();
     }
+
 
 
 }
