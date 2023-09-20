@@ -15,9 +15,12 @@ public class QuestionService {
     public void saveQuestion(Question question) {
         questionsRepository.save(question);
     }
-
-
     public List<Question> findAllThemeQuestions(Long themeId) {
         return questionsRepository.findAllByThemeId(themeId);
     }
+    public Question findByQuestionName(String question){
+        return questionsRepository.findByQuestion(question);
+    }
+
+
 }

@@ -1,11 +1,13 @@
 package ru.bor.examinatorium.services;
 
+import javafx.scene.control.ListView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.bor.examinatorium.entities.Theme;
 import ru.bor.examinatorium.repositories.ThemeRepository;
 import ru.bor.examinatorium.util.AlertExceptionWarning;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,7 +18,7 @@ public class ThemeService {
     public List<Theme> getAllThemes(){
         return themeRepository.findAll();
     }
-    public void saveTheme(Theme theme){
+    public void saveNewTheme(Theme theme){
         if(!themeRepository.existsThemeByThemeName(theme.getThemeName().trim())){
             themeRepository.save(theme);
         }else {
@@ -29,4 +31,21 @@ public class ThemeService {
     public Theme getThemeByThemeName(String themeName){
         return themeRepository.getThemeByThemeName(themeName);
     }
+
+    public void loadThemes(ListView<String> themeLV) {
+        List<String> themes = new ArrayList<>();
+        getAllThemes().forEach(theme -> themes.add(theme.getThemeName()));
+        themeLV.getItems().addAll(themes);
+    }
+
+
+    public void updateTheme(Long oldThemeIid, Theme newTheme) {
+        Theme fromDB = themeRepository.getThemeById(oldThemeIid);
+        fromDB.setThemeName(newTheme.getThemeName());
+        fromDB.setCountdownSeconds(newTheme.getCountdownSeconds());
+        fromDB.setNumberOfQuestions(newTheme.getNumberOfQuestions());
+        fromDB.setNumberOfMistakes(newTheme.getNumberOfMistakes());
+        themeRepository.save(fromDB);
+    }
 }
+

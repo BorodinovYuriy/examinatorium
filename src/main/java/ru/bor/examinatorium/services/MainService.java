@@ -26,18 +26,6 @@ public class MainService {
         return null;
     }
 
-    public void setBackgroundImage(Region region, byte[] imageData) {
-        Image image = new Image(new ByteArrayInputStream(imageData));
-        BackgroundImage backgroundImage = new BackgroundImage(
-                image,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                new BackgroundSize(100, 100, true, true, true, false)
-        );
-        Background background = new Background(backgroundImage);
-        region.setBackground(background);
-    }
 
     public void changeColorToRed(VBox vBox) {
         vBox.setStyle("-fx-background-color: red;");

@@ -5,7 +5,6 @@ import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -19,6 +18,7 @@ import ru.bor.examinatorium.entities.answermode.AnswerModeEnum;
 import ru.bor.examinatorium.services.MainService;
 import ru.bor.examinatorium.services.QuestionService;
 import ru.bor.examinatorium.services.ThemeService;
+import ru.bor.examinatorium.util.DuplicateUtil;
 import ru.bor.examinatorium.util.FileResourcesUtils;
 
 import java.util.List;
@@ -31,6 +31,7 @@ public class MainController {
     private final MainService mainService;
     private final ThemeService themeService;
     private final QuestionService questionService;
+    private final DuplicateUtil duplicateUtil;
 
     @FXML
     public Label choiseTextInfo_Label;// TODO: 07.09.2023 логика отображения и дизайн -всего ответов и кол-во правильных
@@ -76,7 +77,6 @@ public class MainController {
     public void setTheme(ObservableList<String> selectedItems) {
         this.theme = themeService.getThemeByThemeName(selectedItems.get(0));
     }
-
     @FXML
     private void initialize() {
 
@@ -114,21 +114,22 @@ public class MainController {
         resetChoiceButtons();
         if (questionPage >= randomNumberOfTicketArr.length) questionPage = 0;
         if(questionPage < 0) questionPage = randomNumberOfTicketArr.length - 1;
+        if(questionList.get(randomNumberOfTicketArr[questionPage]) != null){
+            Question question = questionList.get(randomNumberOfTicketArr[questionPage]);
 
-        Question question = questionList.get(randomNumberOfTicketArr[questionPage]);
+            questionTextArea.setText(question.toString());
+            duplicateUtil.setBackgroundImage(region, question.getBytes());
 
-        questionTextArea.setText(question.toString());
-        mainService.setBackgroundImage(region, question.getBytes());
-
-        if(question.getAnswerMode().equals(AnswerModeEnum.SINGLE_ANSWER)){
+            if(question.getAnswerMode().equals(AnswerModeEnum.SINGLE_ANSWER)){
                 singleBox.setVisible(true);
                 multiBox.setVisible(false);
+            }
+            if(question.getAnswerMode().equals(AnswerModeEnum.MULTI_ANSWER)){
+                singleBox.setVisible(false);
+                multiBox.setVisible(true);
+            }
+            questionPage++;
         }
-        if(question.getAnswerMode().equals(AnswerModeEnum.MULTI_ANSWER)){
-            singleBox.setVisible(false);
-            multiBox.setVisible(true);
-        }
-        questionPage++;
     }
     private void resetChoiceButtons() {
         mCBox1.setSelected(false);
@@ -175,10 +176,10 @@ public class MainController {
         Question question = questionList.get(randomNumberOfTicketArr[questionPage-1]);
 
         if (question.getAnswerMode().equals(AnswerModeEnum.SINGLE_ANSWER) && choiceGroup.getSelectedToggle() != null) {
-            isRight = isRightAnswerForSingleAnswer(question);
+            isRight = isRightForSingleAnswer(question);
         }
         if(question.getAnswerMode().equals(AnswerModeEnum.MULTI_ANSWER)){
-            isRight = isRightAnswerForMultiAnswer(question);
+            isRight = isRightForMultiAnswer(question);
         }
         if (!isRight)mainService.changeColorToRed(vBoxAll);//Знак неправильного ответа!
 
@@ -187,7 +188,7 @@ public class MainController {
         // TODO: 11.09.2023 отобразить интерну правильность ответа
         showQuestion();
     }
-    private boolean isRightAnswerForMultiAnswer(Question question) {
+    private boolean isRightForMultiAnswer(Question question) {
         StringBuilder internResult = new StringBuilder();
         String rightAnswerFromQuestion = question.getRightAnswer();
 
@@ -200,7 +201,7 @@ public class MainController {
         return !intResult.isEmpty() && intResult.equals(rightAnswerFromQuestion);
         // TODO: 11.09.2023 дальнейшая логика и возврат boolean, продумать логику уже отвеченных билетов
     }
-    private boolean isRightAnswerForSingleAnswer(Question question) {
+    private boolean isRightForSingleAnswer(Question question) {
         RadioButton selectedRadioButton = (RadioButton) choiceGroup.getSelectedToggle();
         String internAnswer = selectedRadioButton.getId().substring(5);
         return internAnswer.equals(question.getRightAnswer());
@@ -211,7 +212,7 @@ public class MainController {
         byte[] arr = fileResourcesUtils
                 .convertStreamToByteArr(
                         fileResourcesUtils
-                                .getFileFromResourceAsStream("images/classic.png"));
+                                .getFileFromResourceAsStream("images/classic.png1"));
 
         Question q1 = Question.builder()
                 .themeId(1L)
@@ -222,7 +223,7 @@ public class MainController {
                 .answerFour("Пять")
                 .rightAnswer("3")
                 .answerMode(AnswerModeEnum.SINGLE_ANSWER)
-                .fileName("classic.png")
+                .fileName("classic.png1")
                 .bytes(arr)
                 .contentType("image/jpeg")
                 .build();
@@ -235,7 +236,7 @@ public class MainController {
                 .answerFour("1 + 1 = 10")
                 .rightAnswer("13")// TODO: 10.09.2023 как бы сделать????
                 .answerMode(AnswerModeEnum.MULTI_ANSWER)
-                .fileName("classic.png")
+                .fileName("classic.png1")
                 .bytes(arr)
                 .contentType("image/jpeg")
                 .build();

@@ -33,7 +33,7 @@
                <children>
                   <TextField fx:id="adminLogin" layoutX="81.0" layoutY="32.0" prefHeight="24.0" prefWidth="156.0" />
                   <TextField fx:id="adminPassword" layoutX="81.0" layoutY="72.0" prefHeight="24.0" prefWidth="156.0" />
-                  <Button fx:id="adminAccessButton" layoutX="81.0" layoutY="111.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="156.0" text="Войти" />
+                  <Button fx:id="adminAccessButton" onAction="#loadAdminPage" layoutX="81.0" layoutY="111.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="156.0" text="Войти" />
                   <Label layoutX="14.0" layoutY="36.0" text="Логин:" />
                   <Label layoutX="14.0" layoutY="76.0" text="Пароль:" />
                </children>

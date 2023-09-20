@@ -36,26 +36,6 @@ create table question
 
 );
 
--- insert into question
--- (
---     theme_id,
---     question,
---     answer_one,
---     answer_two,
---     answer_three,
---     answer_four,
---     right_answer,
---     answer_mode,
---     file_name,
---     bytes,
---     content_type
--- ) values
--- (1,'Чему равно выражение 2+2 ?','1. Один','2. Три','3. Четыре','4. Пять',3,'SINGLE_ANSWER'),
--- (1,'Чему равно выражение 2+3 ?','1. Один','2. Три','3. Четыре','4. Пять',4,'SINGLE_ANSWER'),
--- (1,'Выберите правельные утверждения:','1. 2+2=5','2. 2-2=0','3. 3+3=7','4. 3+3=6',4,'MULTI_ANSWER')
--- ;
-
-
 create table intern
 (
     id                  bigserial primary key,

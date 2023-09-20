@@ -12,5 +12,5 @@ public interface ThemeRepository extends JpaRepository<Theme,Long> {
     Theme getThemeByThemeName(String themeName);
     Optional<Theme> findById(Long id);
     boolean existsThemeByThemeName(String themeName);
-
+    Theme getThemeById(Long id);
 }

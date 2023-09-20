@@ -8,14 +8,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.implementation.bytecode.Throw;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import ru.bor.examinatorium.services.InternService;
 import ru.bor.examinatorium.services.ThemeService;
-import ru.bor.examinatorium.util.AlertExceptionWarning;
 
 import java.util.ArrayList;
 import java.util.List;
