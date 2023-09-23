@@ -175,10 +175,10 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox layoutX="10.0" layoutY="10.0" minHeight="180.0" prefWidth="1150.0" style="-fx-background-color: #F0FFF0;" VBox.vgrow="ALWAYS">
+            <HBox fx:id="questionHBox" layoutX="10.0" layoutY="10.0" minHeight="180.0" prefWidth="1150.0" VBox.vgrow="ALWAYS">
                <children>
                   <ListView fx:id="questionLV" maxWidth="400.0" minWidth="400.0" />
-                  <VBox minHeight="200.0" prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: #008B8B;" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="questionVBox" minHeight="200.0" prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: #008B8B;" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox alignment="CENTER_LEFT" maxHeight="10.0" minHeight="30.0" prefHeight="10.0" prefWidth="750.0" style="-fx-background-color: #FDF5E6;">
                            <children>
@@ -198,9 +198,21 @@
                                     <Insets right="40.0" />
                                  </HBox.margin>
                               </TextField>
-                              <Button fx:id="saveNewQuestionBTN" onAction="#saveNewQuestion" minHeight="25.0" mnemonicParsing="false" text="Сохранить Новый вопрос">
+                              <Button fx:id="createQuestionBTN" disable="true" layoutX="237.0" layoutY="13.0" minHeight="25.0" mnemonicParsing="false" onAction="#createQuestion" text="Создать">
+                                 <effect>
+                                    <DropShadow>
+                                       <color>
+                                          <Color red="0.8026315569877625" green="0.43593546748161316" blue="0.09289717674255371" />
+                                       </color>
+                                    </DropShadow>
+                                 </effect>
                                  <HBox.margin>
-                                    <Insets bottom="2.0" left="20.0" right="40.0" top="2.0" />
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button fx:id="saveNewQuestionBTN" disable="true" minHeight="25.0" mnemonicParsing="false" onAction="#saveNewQuestion" text="Сохранить">
+                                 <HBox.margin>
+                                    <Insets bottom="2.0" right="60.0" top="2.0" />
                                  </HBox.margin>
                                  <effect>
                                     <DropShadow>
@@ -210,9 +222,9 @@
                                     </DropShadow>
                                  </effect>
                               </Button>
-                              <Button fx:id="updateQuestionBTN" minHeight="25.0" minWidth="50.0" mnemonicParsing="false" text="Изменить">
+                              <Button fx:id="updateQuestionBTN" onAction="#updateQuestion" disable="true" minHeight="25.0" minWidth="50.0" mnemonicParsing="false" text="Изменить">
                                  <HBox.margin>
-                                    <Insets bottom="2.0" left="2.0" right="40.0" top="2.0" />
+                                    <Insets bottom="2.0" left="2.0" right="10.0" top="2.0" />
                                  </HBox.margin>
                                  <effect>
                                     <DropShadow>
@@ -225,7 +237,7 @@
                                     <Cursor fx:constant="DEFAULT" />
                                  </cursor>
                               </Button>
-                              <Button fx:id="deleteQuestionBTN" minHeight="25.0" mnemonicParsing="false" prefWidth="80.0" text="Удалить ">
+                              <Button fx:id="deleteQuestionBTN" disable="true" minHeight="25.0" mnemonicParsing="false" onAction="#deleteQuestion" prefWidth="80.0" text="Удалить ">
                                  <effect>
                                     <DropShadow>
                                        <color>
@@ -371,9 +383,9 @@
                               <Insets top="1.0" />
                            </VBox.margin>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" maxHeight="30.0" minHeight="30.0" prefHeight="61.0" prefWidth="650.0" style="-fx-background-color: #FAEBD7;">
+                        <HBox fx:id="picHBox" alignment="CENTER_LEFT" maxHeight="30.0" minHeight="30.0" prefHeight="61.0" prefWidth="650.0" style="-fx-background-color: #FAEBD7;" visible="false">
                            <children>
-                              <Button fx:id="setPicBTN" minHeight="10.0" minWidth="100.0" mnemonicParsing="false" text="Set pictire">
+                              <Button fx:id="setPicBTN" minHeight="10.0" minWidth="100.0" mnemonicParsing="false" onAction="#setPicture" text="Set picture">
                                  <HBox.margin>
                                     <Insets left="4.0" right="5.0" />
                                  </HBox.margin>

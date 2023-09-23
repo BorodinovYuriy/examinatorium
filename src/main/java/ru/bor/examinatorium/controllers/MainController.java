@@ -18,8 +18,7 @@ import ru.bor.examinatorium.entities.answermode.AnswerModeEnum;
 import ru.bor.examinatorium.services.MainService;
 import ru.bor.examinatorium.services.QuestionService;
 import ru.bor.examinatorium.services.ThemeService;
-import ru.bor.examinatorium.util.DuplicateUtil;
-import ru.bor.examinatorium.util.FileResourcesUtils;
+import ru.bor.examinatorium.util.Util;
 
 import java.util.List;
 import java.util.Random;
@@ -31,7 +30,7 @@ public class MainController {
     private final MainService mainService;
     private final ThemeService themeService;
     private final QuestionService questionService;
-    private final DuplicateUtil duplicateUtil;
+    private final Util util;
 
     @FXML
     public Label choiseTextInfo_Label;// TODO: 07.09.2023 логика отображения и дизайн -всего ответов и кол-во правильных
@@ -79,9 +78,6 @@ public class MainController {
     }
     @FXML
     private void initialize() {
-
-//        createTestEntityQuestions();
-
         singleBox.setVisible(false);
         multiBox.setVisible(false);
         questionList = questionService.findAllThemeQuestions(theme.getId());
@@ -118,7 +114,7 @@ public class MainController {
             Question question = questionList.get(randomNumberOfTicketArr[questionPage]);
 
             questionTextArea.setText(question.toString());
-            duplicateUtil.setBackgroundImage(region, question.getBytes());
+            util.setBackgroundImage(region, question.getBytes());
 
             if(question.getAnswerMode().equals(AnswerModeEnum.SINGLE_ANSWER)){
                 singleBox.setVisible(true);
@@ -207,44 +203,5 @@ public class MainController {
         return internAnswer.equals(question.getRightAnswer());
         // TODO: 11.09.2023 дальнейшая логика и возврат boolean, продумать логику уже отвеченных билетов
     }
-    private void createTestEntityQuestions() {
-        FileResourcesUtils fileResourcesUtils = new FileResourcesUtils();
-        byte[] arr = fileResourcesUtils
-                .convertStreamToByteArr(
-                        fileResourcesUtils
-                                .getFileFromResourceAsStream("images/classic.png1"));
-
-        Question q1 = Question.builder()
-                .themeId(1L)
-                .question("Чему равно выражение 2+2 ?")
-                .answerOne("Один")
-                .answerTwo("Три")
-                .answerThree("Четыре")
-                .answerFour("Пять")
-                .rightAnswer("3")
-                .answerMode(AnswerModeEnum.SINGLE_ANSWER)
-                .fileName("classic.png1")
-                .bytes(arr)
-                .contentType("image/jpeg")
-                .build();
-        Question q2 = Question.builder()
-                .themeId(1L)
-                .question("Выберите правильные варианты:")
-                .answerOne("3 - 2 = 1")
-                .answerTwo("4 - 1 = 5")
-                .answerThree("0 - 0 = 0")
-                .answerFour("1 + 1 = 10")
-                .rightAnswer("13")// TODO: 10.09.2023 как бы сделать????
-                .answerMode(AnswerModeEnum.MULTI_ANSWER)
-                .fileName("classic.png1")
-                .bytes(arr)
-                .contentType("image/jpeg")
-                .build();
-
-
-        questionService.saveQuestion(q1);
-        questionService.saveQuestion(q2);
-    }
-
 
 }

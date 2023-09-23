@@ -4,7 +4,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
@@ -14,9 +17,11 @@ import ru.bor.examinatorium.entities.answermode.AnswerModeEnum;
 import ru.bor.examinatorium.services.QuestionService;
 import ru.bor.examinatorium.services.ThemeService;
 import ru.bor.examinatorium.util.AlertExceptionWarning;
-import ru.bor.examinatorium.util.DuplicateUtil;
+import ru.bor.examinatorium.util.Util;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -25,7 +30,7 @@ import java.util.List;
 public class AdminController {
     private final ThemeService themeService;
     private final QuestionService questionService;
-    private final DuplicateUtil duplicateUtil;
+    private final Util util;
     @FXML
     public ListView<String> themeLV;
     @FXML
@@ -82,48 +87,85 @@ public class AdminController {
     public Button deleteQuestionBTN;
     @FXML
     public TextField pathToPicTF;
+    @FXML
+    public HBox picHBox;
+    @FXML
+    public Button createQuestionBTN;
+    @FXML
+    public VBox questionVBox;
 
     @FXML
     private void initialize(){
         loadThemes(themeLV);
-
         themeLV.setOnMouseClicked(event -> {
-            loadQuestionOfSelectedTheme(themeLV.getSelectionModel().getSelectedItem());
+            themeLvEvent();
         });
-        questionLV.setOnMouseClicked(event -> {
-            showQuestionInfo(questionLV.getSelectionModel().getSelectedItem());
+        themeLV.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                themeLvEvent();
+            }
         });
-//        listView.setOnKeyPressed(event -> {
-//            if (event.getCode() == KeyCode.ENTER) {
-//                String selectedItem = listView.getSelectionModel().getSelectedItem();
-//                System.out.println("Selected Item: " + selectedItem);
-//            }
-//        });
-    }
-    private void showQuestionInfo(String questionName) {
-        Question question = questionService.findByQuestionName(questionName);
-        questionIdTF.setText(question.getId().toString());
-        questionTA.setText(question.getQuestion());
-        answer1TA.setText(question.getAnswerOne());
-        answer2TA.setText(question.getAnswerTwo());
-        answer3TA.setText(question.getAnswerThree());
-        answer4TA.setText(question.getAnswerFour());
-        rightAnswerTF.setText(question.getRightAnswer());
-        duplicateUtil.setBackgroundImage(picRegion, question.getBytes());
 
-        switch (question.getAnswerMode()){
-            case MULTI_ANSWER:
-                answerModeTGroup.selectToggle(multiAnswerRB);
-                break;
-            case SINGLE_ANSWER:
-                answerModeTGroup.selectToggle(singleAnswerRB);
-                break;
+        questionLV.setOnMouseClicked(event -> {
+            String[] questionId = questionLV.getSelectionModel().getSelectedItem().split(". ");
+            showQuestionInfo(Long.parseLong(questionId[0]));
+        });
+    }
+
+    private void themeLvEvent() {
+        if(themeLV.getSelectionModel().getSelectedItem() != null){
+            loadQuestionOfSelectedTheme(themeLV.getSelectionModel().getSelectedItem());
+            createQuestionBTN.setDisable(false);
+        }else{
+            createQuestionBTN.setDisable(true);
+        }
+    }
+    private void showQuestionInfo(Long questionId) {
+        questionVBox.setStyle("-fx-background-color:  #008B8B;");
+        createQuestionBTN.setDisable(false);
+        saveNewQuestionBTN.setDisable(true);
+        deleteQuestionBTN.setDisable(false);
+        updateQuestionBTN.setDisable(false);
+        Question question = questionService.findQuestionById(questionId).orElse(null);
+        if(question != null){
+            picHBox.setVisible(true);
+            questionIdTF.setText(question.getId().toString());
+            questionTA.setText(question.getQuestion());
+            answer1TA.setText(question.getAnswerOne());
+            answer2TA.setText(question.getAnswerTwo());
+            answer3TA.setText(question.getAnswerThree());
+            answer4TA.setText(question.getAnswerFour());
+            rightAnswerTF.setText(question.getRightAnswer());
+            util.setBackgroundImage(picRegion, question.getBytes());
+            switch (question.getAnswerMode()){
+                case MULTI_ANSWER:
+                    answerModeTGroup.selectToggle(multiAnswerRB);
+                    break;
+                case SINGLE_ANSWER:
+                    answerModeTGroup.selectToggle(singleAnswerRB);
+                    break;
+            }
+        }
+    }
+    private void updateQuestionLV(){
+        questionLV.getItems().clear();
+        if(!themeLV.getSelectionModel().getSelectedItems().isEmpty()){
+            loadQuestionOfSelectedTheme(themeLV.getSelectionModel().getSelectedItem());
         }
     }
     private void clearQuestionInfo(){
-        // TODO: 19.09.2023 при смене темы - убрать инфо вопросов
+        questionIdTF.clear();
+        questionTA.clear();
+        answer1TA.clear();
+        answer2TA.clear();
+        answer3TA.clear();
+        answer4TA.clear();
+        rightAnswerTF.clear();
+        util.setBackgroundImage(picRegion, null);
     }
     private void showThemeInfo(Theme theme) {
+        updateQuestionBTN.setDisable(true);
+        deleteQuestionBTN.setDisable(true);
         themeIdTF.setText(theme.getId().toString());
         themeNameTF.setText(theme.getThemeName());
         timeOfThemeTF.setText(String.valueOf(theme.getCountdownSeconds()));
@@ -136,12 +178,13 @@ public class AdminController {
     }
     private void loadQuestionOfSelectedTheme(String themName){
         clearQuestionInfo();
+        picHBox.setVisible(false);
         Theme theme = themeService.getThemeByThemeName(themName);
         showThemeInfo(theme);
         questionLV.getItems().clear();
         Long themeId = theme.getId();
         List<String> questionName = new ArrayList<>();
-        questionService.findAllThemeQuestions(themeId).forEach(question -> questionName.add(question.getQuestion()));
+        questionService.findAllThemeQuestions(themeId).forEach(question -> questionName.add(question.getId()+". "+question.getQuestion()));
         questionLV.getItems().addAll(questionName);
     }
     public void doThemeChanges(ActionEvent actionEvent) {
@@ -187,34 +230,107 @@ public class AdminController {
         }
 
     }
+    public Question prepareQuestion(){
+        try{
+            if (!themeLV.getSelectionModel().isEmpty()) {
+                AnswerModeEnum answerMode = null;
+                RadioButton selectedRadioButton = (RadioButton) answerModeTGroup.getSelectedToggle();
+                switch (selectedRadioButton.getId()){
+                    case "multiAnswerRB":
+                        answerMode = AnswerModeEnum.MULTI_ANSWER;
+                        break;
+                    case "singleAnswerRB":
+                        answerMode = AnswerModeEnum.SINGLE_ANSWER;
+                        break;
+                }
+                Question questionToSave = Question.builder()
+                        .themeId(Long.parseLong(themeIdTF.getText()))
+                        .question(questionTA.getText())
+                        .answerOne(answer1TA.getText())
+                        .answerTwo(answer2TA.getText())
+                        .answerThree(answer3TA.getText())
+                        .answerFour(answer4TA.getText())
+                        .rightAnswer(rightAnswerTF.getText())
+                        .answerMode(answerMode)
+                        .build();
 
-    public void saveNewQuestion(ActionEvent actionEvent) {
-        if (!themeLV.getSelectionModel().isEmpty()) {
-            // TODO: 20.09.2023 пока простой вариант
-            AnswerModeEnum answerMode = null;
-            RadioButton selectedRadioButton = (RadioButton) answerModeTGroup.getSelectedToggle();
-            switch (selectedRadioButton.getId()){
-                case "multiAnswerRB":
-                    answerMode = AnswerModeEnum.MULTI_ANSWER;
-                    break;
-                case "singleAnswerRB":
-                    answerMode = AnswerModeEnum.SINGLE_ANSWER;
-                    break;
+                if(validateQuestionToSave(questionToSave)){
+                    return questionToSave;
+                }else {
+                    AlertExceptionWarning.showAlert("Ошибка валидации вопроса!", "Проверьте, правильно ли составлен вопрос!");
+                }
             }
-            Question questionToSave = Question.builder()
-                .themeId(Long.parseLong(themeIdTF.getText()))
-                .question(questionTA.getText())
-                .answerOne(answer1TA.getText())
-                .answerTwo(answer2TA.getText())
-                .answerThree(answer3TA.getText())
-                .answerFour(answer4TA.getText())
-                .rightAnswer(rightAnswerTF.getText())
-                .answerMode(answerMode)
-                    // TODO: 20.09.2023 нужна картинка по дефолту!!! 
-//                .fileName()
-                .build();
-            questionService.saveQuestion(questionToSave);
+        }catch (NullPointerException e){
+            AlertExceptionWarning.showAlert("Ошибка валидации вопроса!", "Проверьте, правильно ли составлен вопрос!");
         }
+        return null;
+    }
+    public void saveNewQuestion(ActionEvent actionEvent) {
+        Question question = prepareQuestion();
+            if(question != null){
+                Long createdId = questionService.saveQuestion(question).getId();
+                updateQuestionLV();
+                clearQuestionInfo();
+                questionLV.getSelectionModel().select(createdId+". "+question.getQuestion());
+                showQuestionInfo(createdId);
+                picHBox.setVisible(true);
+            }
+    }
+    private boolean validateQuestionToSave(Question questionToSave) {
+        if(!questionToSave.getQuestion().trim().isEmpty()) {
+            try {
+                int rightAns = Integer.parseInt(questionToSave.getRightAnswer());
 
+                if(questionToSave.getAnswerMode().equals(AnswerModeEnum.SINGLE_ANSWER)){
+                    if(questionToSave.getRightAnswer().trim().length() == 1){
+                        return util.validateRightAnswer(questionToSave.getRightAnswer());
+                    }
+                }
+                if(questionToSave.getAnswerMode().equals(AnswerModeEnum.MULTI_ANSWER)){
+                    if(questionToSave.getRightAnswer().trim().length() <= 4){
+                        return util.validateRightAnswer(questionToSave.getRightAnswer());
+                    }
+                }
+            }catch (NumberFormatException exception){
+                return false;
+            }
+        }
+        return false;
+    }
+    public void deleteQuestion(ActionEvent actionEvent) {
+        questionService.deleteQuestionById(Long.parseLong(questionIdTF.getText()));
+        updateQuestionLV();
+        clearQuestionInfo();
+    }
+    public void setPicture(ActionEvent actionEvent) {
+        String imagePath = pathToPicTF.getText().trim();
+        Long id = Long.parseLong(questionIdTF.getText());
+        byte[] imageBytes = questionService.convertImageToByteArray(imagePath);
+        assert imageBytes != null;
+        questionService.savePicToQuestion(id,imageBytes);
+        showQuestionInfo(id);
+
+    }
+    public void createQuestion(ActionEvent actionEvent) {
+        createQuestionBTN.setDisable(true);
+        updateQuestionBTN.setDisable(true);
+        deleteQuestionBTN.setDisable(true);
+        clearQuestionInfo();
+        saveNewQuestionBTN.setDisable(false);
+        picHBox.setVisible(false);
+        questionVBox.setStyle("-fx-background-color: #7B68EE;");
+    }
+
+    public void updateQuestion(ActionEvent actionEvent) {
+        Question question = prepareQuestion();
+        if (question != null){
+            Long id = Long.parseLong(questionIdTF.getText());
+            questionService.updateQuestion(id, question);
+            updateQuestionLV();
+            clearQuestionInfo();
+            questionLV.getSelectionModel().select(id+". "+question.getQuestion());
+            showQuestionInfo(id);
+            picHBox.setVisible(true);
+        }
     }
 }
