@@ -56,12 +56,11 @@ public class Question {
 
     @Override
     public String toString() {
-        return  "Q_id = " + id +"\n\n"+
-                question     +"\n\n\n"+
-                answerOne    +"\n\n"+
-                answerTwo    +"\n\n"+
-                answerThree  +"\n\n"+
-                answerFour;
+        return  question     +"\n\n\n"+
+                "1. "+answerOne    +"\n\n"+
+                "2. "+answerTwo    +"\n\n"+
+                "3. "+answerThree  +"\n\n"+
+                "4. "+answerFour;
 
     }
 }

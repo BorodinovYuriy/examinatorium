@@ -66,15 +66,23 @@ public class MainController {
     public Button AnswerButton;
     @FXML
     public VBox vBoxAll;
-
+    @FXML
+    public Label mistakes;
+    @FXML
+    public Label questionCount;
     private int remainingSeconds;
     private Theme theme;
     private List<Question> questionList;
     private int[] randomNumberOfTicketArr;
     private int questionPage = 0;
+    protected int lastQuestions;
+    protected int mistakesCount;
+
 
     public void setTheme(ObservableList<String> selectedItems) {
         this.theme = themeService.getThemeByThemeName(selectedItems.get(0));
+        lastQuestions = theme.getNumberOfQuestions();
+        mistakesCount = theme.getNumberOfMistakes();
     }
     @FXML
     private void initialize() {
@@ -107,6 +115,9 @@ public class MainController {
         }
     }
     private void showQuestion() {
+
+        questionCount.setText(String.valueOf(lastQuestions));
+        mistakes.setText(String.valueOf(mistakesCount));
         resetChoiceButtons();
         if (questionPage >= randomNumberOfTicketArr.length) questionPage = 0;
         if(questionPage < 0) questionPage = randomNumberOfTicketArr.length - 1;
@@ -177,13 +188,26 @@ public class MainController {
         if(question.getAnswerMode().equals(AnswerModeEnum.MULTI_ANSWER)){
             isRight = isRightForMultiAnswer(question);
         }
-        if (!isRight)mainService.changeColorToRed(vBoxAll);//Знак неправильного ответа!
+        if (!isRight){
+            mainService.changeColorToRed(vBoxAll);//Знак неправильного ответа!
+            mistakesCount--;
+        }else {
+            lastQuestions--;
+        }
+        if(lastQuestions != 0 || mistakesCount != 0 ){
+            resetChoiceButtons();
+            showQuestion();
+        }else{
+            stopTest(lastQuestions, mistakesCount);
+        }
 
-        System.out.println(isRight);
-        resetChoiceButtons();
-        // TODO: 11.09.2023 отобразить интерну правильность ответа
-        showQuestion();
     }
+
+    private void stopTest(int lastQuestions, int mistakesCount) {
+
+    }
+
+
     private boolean isRightForMultiAnswer(Question question) {
         StringBuilder internResult = new StringBuilder();
         String rightAnswerFromQuestion = question.getRightAnswer();

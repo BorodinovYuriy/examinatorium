@@ -93,10 +93,13 @@ public class AdminController {
     public Button createQuestionBTN;
     @FXML
     public VBox questionVBox;
+    @FXML
+    public VBox themeVbox;
 
     @FXML
     private void initialize(){
         loadThemes(themeLV);
+        themeVbox.setDisable(true);
         themeLV.setOnMouseClicked(event -> {
             themeLvEvent();
         });
@@ -111,8 +114,8 @@ public class AdminController {
             showQuestionInfo(Long.parseLong(questionId[0]));
         });
     }
-
     private void themeLvEvent() {
+        themeVbox.setDisable(false);
         if(themeLV.getSelectionModel().getSelectedItem() != null){
             loadQuestionOfSelectedTheme(themeLV.getSelectionModel().getSelectedItem());
             createQuestionBTN.setDisable(false);
@@ -320,7 +323,6 @@ public class AdminController {
         picHBox.setVisible(false);
         questionVBox.setStyle("-fx-background-color: #7B68EE;");
     }
-
     public void updateQuestion(ActionEvent actionEvent) {
         Question question = prepareQuestion();
         if (question != null){
@@ -332,5 +334,13 @@ public class AdminController {
             showQuestionInfo(id);
             picHBox.setVisible(true);
         }
+    }
+    public void deleteThemeAndQuestions(ActionEvent actionEvent) {
+        Long themeId = Long.parseLong(themeIdTF.getText());
+        themeService.deleteThemeById(themeId);
+        questionService.deleteQuestionsByThemeId(themeId);
+        themeLV.getItems().clear();
+        questionLV.getItems().clear();
+        loadThemes(themeLV);
     }
 }

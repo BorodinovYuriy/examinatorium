@@ -12,5 +12,5 @@ public interface QuestionsRepository extends JpaRepository<Question,Long> {
         List<Question> findAllByThemeId(Long themeId);
         Question findByQuestion(String question);
         Optional<Question> findById(Long id);
-
+        void deleteAllByThemeId(Long themeId);
 }

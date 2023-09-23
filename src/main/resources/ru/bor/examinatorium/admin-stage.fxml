@@ -45,7 +45,7 @@
             <HBox maxHeight="160.0" minHeight="210.0" minWidth="1100.0" prefHeight="237.0" prefWidth="1150.0">
                <children>
                   <ListView fx:id="themeLV" maxWidth="400.0" minWidth="400.0" />
-                  <VBox minHeight="140.0" prefHeight="184.0" prefWidth="750.0" style="-fx-background-color: #20B2AA;" HBox.hgrow="ALWAYS">
+                  <VBox fx:id="themeVbox" disable="true" minHeight="140.0" prefHeight="184.0" prefWidth="750.0" style="-fx-background-color: #20B2AA;" HBox.hgrow="ALWAYS">
                      <children>
                         <HBox alignment="CENTER_LEFT" minHeight="23.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #FDF5E6;">
                            <children>
@@ -153,7 +153,7 @@
                               <Insets left="4.0" right="4.0" top="4.0" />
                            </VBox.margin>
                         </HBox>
-                        <Button fx:id="deleteThemeAndQuestionsBTN" layoutX="10.0" layoutY="130.0" mnemonicParsing="false" text="Удалить тему и её вопросы" textAlignment="CENTER" textFill="#c60202" textOverrun="CLIP">
+                        <Button fx:id="deleteThemeAndQuestionsBTN" layoutX="10.0" layoutY="130.0" mnemonicParsing="false" onAction="#deleteThemeAndQuestions" text="Удалить тему и её вопросы" textAlignment="CENTER" textFill="#c60202" textOverrun="CLIP">
                            <VBox.margin>
                               <Insets bottom="10.0" left="4.0" right="10.0" top="10.0" />
                            </VBox.margin>
@@ -222,7 +222,7 @@
                                     </DropShadow>
                                  </effect>
                               </Button>
-                              <Button fx:id="updateQuestionBTN" onAction="#updateQuestion" disable="true" minHeight="25.0" minWidth="50.0" mnemonicParsing="false" text="Изменить">
+                              <Button fx:id="updateQuestionBTN" disable="true" minHeight="25.0" minWidth="50.0" mnemonicParsing="false" onAction="#updateQuestion" text="Изменить">
                                  <HBox.margin>
                                     <Insets bottom="2.0" left="2.0" right="10.0" top="2.0" />
                                  </HBox.margin>

@@ -58,4 +58,7 @@ public class QuestionService {
         questionFromDB.setAnswerMode(question.getAnswerMode());
         questionsRepository.save(questionFromDB);
     }
+    public void deleteQuestionsByThemeId(Long themeId) {
+        questionsRepository.findAllByThemeId(themeId);
+    }
 }
