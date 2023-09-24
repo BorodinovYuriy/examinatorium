@@ -1,2 +1,5 @@
-# javafx-weaver-example
-Example repository for blog post about Spring Boot and JavaFX integration
+# examinatorium
+Программа контроля знаний.<br>
+Технологии:<br>
+javaFX<br>
+Spring<br>
