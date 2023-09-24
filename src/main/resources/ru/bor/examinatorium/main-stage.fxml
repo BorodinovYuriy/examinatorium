@@ -23,12 +23,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem fx:id="backToWelcomeStageMI" mnemonicParsing="false" onAction="#backToWelcomeStage" text="Вернуться к выбору темы" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -48,7 +43,7 @@
       </Label>
       <HBox alignment="CENTER" maxHeight="30.0" prefHeight="100.0" prefWidth="100.0">
          <children>
-            <Label fx:id="questionCount" alignment="CENTER" contentDisplay="CENTER" text="Осталось Вопросов">
+            <Label fx:id="questionCountLabel" alignment="CENTER" contentDisplay="CENTER" text="Осталось Вопросов">
                <font>
                   <Font size="18.0" />
                </font>
@@ -67,11 +62,11 @@
       </HBox>
       <HBox minHeight="500.0" prefHeight="348.0" prefWidth="728.0" style="-fx-background-color: #FFDEAD;" VBox.vgrow="ALWAYS">
          <children>
-            <TextArea fx:id="questionTextArea" blendMode="MULTIPLY" editable="false" prefHeight="700.0" prefWidth="530.0" promptText="Билет №1  ..............................................................................................." wrapText="true" HBox.hgrow="ALWAYS">
+            <TextArea fx:id="questionTextArea" blendMode="MULTIPLY" editable="false" prefHeight="700.0" prefWidth="530.0" promptText="Нажмите: &quot;File / Вернуться к выбору темы&quot;." wrapText="true" HBox.hgrow="ALWAYS">
                <font>
-                  <Font size="27.0" />
+                  <Font size="18.0" />
                </font></TextArea>
-            <VBox fx:id="choiseVBox_AllElements" minHeight="400.0" minWidth="420.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+            <VBox fx:id="choiceVBox_AllElements" minHeight="400.0" minWidth="420.0" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
                   <StackPane prefHeight="25.0" prefWidth="481.0" VBox.vgrow="NEVER">
                      <children>
@@ -155,7 +150,7 @@
                               <DropShadow />
                            </effect>
                         </Button>
-                        <Button fx:id="AnswerButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#doAnswer" prefHeight="50.0" prefWidth="140.0" text="Ответить">
+                        <Button fx:id="answerButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#doAnswer" prefHeight="50.0" prefWidth="140.0" text="Ответить">
                            <effect>
                               <DropShadow />
                            </effect>

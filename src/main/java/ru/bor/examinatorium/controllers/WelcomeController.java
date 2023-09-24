@@ -12,7 +12,6 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import ru.bor.examinatorium.services.InternService;
 import ru.bor.examinatorium.services.ThemeService;
 
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ public class WelcomeController {
     private final ApplicationContext context;
     private final MainController mainController;
     private final ThemeService themeService;
-    private final InternService internService;
     @FXML
     public ListView<String> choiceListView;
     @FXML
@@ -63,14 +61,15 @@ public class WelcomeController {
     public void loadMainPage(ActionEvent actionEvent){
         startTestButton.getScene().getWindow().hide();
         mainController.setTheme(choiceListView.getSelectionModel().getSelectedItems());
-        Stage stage = new Stage();
-        FxWeaver fxWeaver = context.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(MainController.class);
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setMinHeight(600);
-        stage.setMinWidth(1000);
-        stage.show();
+
+            Stage stage = new Stage();
+            FxWeaver fxWeaver = context.getBean(FxWeaver.class);
+            Parent root = fxWeaver.loadView(MainController.class);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setMinHeight(600);
+            stage.setMinWidth(1000);
+            stage.show();
     }
 
     public void setVisibleAdminPane(ActionEvent actionEvent){

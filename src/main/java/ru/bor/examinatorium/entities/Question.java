@@ -44,15 +44,12 @@ public class Question {
     @Column(name = "answer_mode",unique = true)
     private AnswerModeEnum answerMode;
 
-    @Column(name = "file_name")
-    private String fileName;
-
     @Lob
     @Type(type = "org.hibernate.type.ImageType")
     private byte[] bytes;
 
-    @Column(name = "content_type")
-    private String contentType;
+    @Column(name = "flag")
+    private boolean flag;
 
     @Override
     public String toString() {

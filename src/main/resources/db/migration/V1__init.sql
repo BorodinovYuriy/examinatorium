@@ -7,18 +7,6 @@ create table theme
     number_of_mistakes  int not null
 );
 
-insert into theme (theme_name,
-                   countdown_seconds,
-                   number_of_questions,
-                   number_of_mistakes)
-values
-(
-     'Простейшая математика',
-        90,
-        10,
-        2
-);
-
 create table question
 (
     id                  bigserial primary key,
@@ -30,10 +18,8 @@ create table question
     answer_four         text not null,
     right_answer        varchar(4) not null,
     answer_mode         varchar(15) not null,
-    file_name           varchar(100),
     bytes               bytea,
-    content_type        varchar(50)
-
+    flag                boolean
 );
 
 create table intern
@@ -41,9 +27,3 @@ create table intern
     id                  bigserial primary key,
     info                text not null
 );
-
-insert into intern (info)
-values
-    (
-     'заипало - работай!'
-    );

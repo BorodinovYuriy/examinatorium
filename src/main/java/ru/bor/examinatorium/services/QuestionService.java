@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.bor.examinatorium.entities.Question;
 import ru.bor.examinatorium.repositories.QuestionsRepository;
 import ru.bor.examinatorium.util.AlertExceptionWarning;
-import ru.bor.examinatorium.util.NotFoundInternException;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +18,7 @@ public class QuestionService {
     private final QuestionsRepository questionsRepository;
 
     public Question saveQuestion(Question question) {
+        question.setFlag(true);
         return questionsRepository.save(question);
     }
     public List<Question> findAllThemeQuestions(Long themeId) {

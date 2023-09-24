@@ -3,13 +3,18 @@ package ru.bor.examinatorium.controllers;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
+import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import ru.bor.examinatorium.entities.Question;
 import ru.bor.examinatorium.entities.Theme;
@@ -19,9 +24,7 @@ import ru.bor.examinatorium.services.ThemeService;
 import ru.bor.examinatorium.util.AlertExceptionWarning;
 import ru.bor.examinatorium.util.Util;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -31,6 +34,7 @@ public class AdminController {
     private final ThemeService themeService;
     private final QuestionService questionService;
     private final Util util;
+    private final ApplicationContext context;
     @FXML
     public ListView<String> themeLV;
     @FXML
@@ -342,5 +346,16 @@ public class AdminController {
         themeLV.getItems().clear();
         questionLV.getItems().clear();
         loadThemes(themeLV);
+    }
+    public void backToWelcomeStage(ActionEvent actionEvent) {
+        Stage adminStage = (Stage) createQuestionBTN.getScene().getWindow();
+        adminStage.close();
+
+        Stage welcomeStage = new Stage();
+        FxWeaver fxWeaver = context.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(WelcomeController.class);
+        Scene scene = new Scene(root);
+        welcomeStage.setScene(scene);
+        welcomeStage.show();
     }
 }

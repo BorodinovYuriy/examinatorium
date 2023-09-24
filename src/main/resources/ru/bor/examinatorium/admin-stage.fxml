@@ -25,12 +25,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+              <MenuItem fx:id="backToWelcomeStageMI" mnemonicParsing="false" onAction="#backToWelcomeStage" text="Вернуться к выбору темы" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -378,6 +373,14 @@
                                  <HBox.margin>
                                     <Insets bottom="1.0" />
                                  </HBox.margin></TextField>
+                              <Label text="В режиме MULTI_ANSWER соблюдайте очередность правильных ответов(1234))">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </Label>
                            </children>
                            <VBox.margin>
                               <Insets top="1.0" />
@@ -403,7 +406,7 @@
                               <Insets left="4.0" right="4.0" />
                            </VBox.margin>
                         </HBox>
-                        <Region fx:id="picRegion" prefHeight="196.0" prefWidth="434.0" VBox.vgrow="ALWAYS" />
+                        <Region fx:id="picRegion" prefHeight="196.0" prefWidth="750.0" VBox.vgrow="ALWAYS" />
                      </children>
                   </VBox>
                </children>

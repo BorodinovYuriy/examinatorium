@@ -68,12 +68,20 @@ public class Util {
     }
     public boolean validateRightAnswer(String rightAnswer) {
         int[] arr = convertStringToIntArray(rightAnswer);
-        for (int j : arr) {
-            if (j < 1 || j > 4) {
-                return false;
+        boolean isValid = true;
+        if(arr.length == 1 && !(arr[0] >= 1 && arr[0] <= 4)){
+            isValid = false;
+        } else if (arr.length > 1 && arr.length <= 4) {
+            for (int i = 0; i < arr.length - 1; i++) {
+                for (int j = i + 1; j < arr.length; j++) {
+                    if (arr[i] == arr[j]) {
+                        isValid = false;
+                        break;
+                    }
+                }
             }
         }
-        return true;
+        return isValid;
     }
 
 
