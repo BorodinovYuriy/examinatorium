@@ -62,7 +62,7 @@
       </HBox>
       <HBox minHeight="500.0" prefHeight="348.0" prefWidth="728.0" style="-fx-background-color: #FFDEAD;" VBox.vgrow="ALWAYS">
          <children>
-            <TextArea fx:id="questionTextArea" blendMode="MULTIPLY" editable="false" prefHeight="700.0" prefWidth="530.0" promptText="Нажмите: &quot;File / Вернуться к выбору темы&quot;." wrapText="true" HBox.hgrow="ALWAYS">
+            <TextArea fx:id="questionTextArea" blendMode="MULTIPLY" editable="false" mouseTransparent="true" prefHeight="700.0" prefWidth="530.0" promptText="Нажмите: &quot;File / Вернуться к выбору темы&quot;." wrapText="true" HBox.hgrow="ALWAYS">
                <font>
                   <Font size="18.0" />
                </font></TextArea>
